@@ -1,21 +1,53 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
-[ext_resource path="res://sprites/player/adventurer-idle-2-00.png" type="Texture" id=2]
-[ext_resource path="res://sprites/player/adventurer-idle-2-02.png" type="Texture" id=3]
-[ext_resource path="res://sprites/player/adventurer-idle-2-01.png" type="Texture" id=4]
-[ext_resource path="res://sprites/player/adventurer-idle-2-03.png" type="Texture" id=5]
+[ext_resource path="res://sprites/player/idle/idle0.png" type="Texture" id=2]
+[ext_resource path="res://sprites/player/idle/idle1.png" type="Texture" id=3]
+[ext_resource path="res://sprites/player/idle/idle2.png" type="Texture" id=4]
+[ext_resource path="res://sprites/player/idle/idle3.png" type="Texture" id=5]
+[ext_resource path="res://sprites/player/run/run00.png" type="Texture" id=6]
+[ext_resource path="res://sprites/player/run/run01.png" type="Texture" id=7]
+[ext_resource path="res://sprites/player/run/run02.png" type="Texture" id=8]
+[ext_resource path="res://sprites/player/run/run03.png" type="Texture" id=9]
+[ext_resource path="res://sprites/player/run/run04.png" type="Texture" id=10]
+[ext_resource path="res://sprites/player/run/run05.png" type="Texture" id=11]
+[ext_resource path="res://sprites/player/run/run06.png" type="Texture" id=12]
+[ext_resource path="res://sprites/player/run/run07.png" type="Texture" id=13]
+[ext_resource path="res://sprites/player/run/run08.png" type="Texture" id=14]
+[ext_resource path="res://sprites/player/run/run09.png" type="Texture" id=15]
+[ext_resource path="res://sprites/player/run/run10.png" type="Texture" id=16]
+[ext_resource path="res://sprites/player/run/run11.png" type="Texture" id=17]
+[ext_resource path="res://sprites/player/jump/jump4.png" type="Texture" id=18]
+[ext_resource path="res://sprites/player/jump/jump0.png" type="Texture" id=19]
+[ext_resource path="res://sprites/player/jump/jump1.png" type="Texture" id=20]
+[ext_resource path="res://sprites/player/jump/jump2.png" type="Texture" id=21]
+[ext_resource path="res://sprites/player/jump/jump3.png" type="Texture" id=22]
 
-[sub_resource type="SpriteFrames" id=1]
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 16, 20.2869 )
+
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ],
 "loop": true,
 "name": "idle",
-"speed": 4.0
+"speed": 6.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ) ],
+"loop": true,
+"name": "run",
+"speed": 12.0
+}, {
+"frames": [ ExtResource( 18 ) ],
+"loop": false,
+"name": "fall",
+"speed": 0.0
+}, {
+"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ) ],
+"loop": false,
+"name": "jump",
+"speed": 12.0
 } ]
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 16, 14 )
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -23,11 +55,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
-frames = SubResource( 1 )
-animation = "idle"
-frame = 2
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, 4 )
-shape = SubResource( 2 )
+shape = SubResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 2 )
+animation = "idle"
+frame = 3
