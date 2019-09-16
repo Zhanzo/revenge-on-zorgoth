@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://scripts/Player.gd" type="Script" id=1]
 [ext_resource path="res://sprites/player/idle/idle0.png" type="Texture" id=2]
@@ -18,13 +18,19 @@
 [ext_resource path="res://sprites/player/run/run10.png" type="Texture" id=16]
 [ext_resource path="res://sprites/player/run/run11.png" type="Texture" id=17]
 [ext_resource path="res://sprites/player/jump/jump4.png" type="Texture" id=18]
-[ext_resource path="res://sprites/player/jump/jump0.png" type="Texture" id=19]
-[ext_resource path="res://sprites/player/jump/jump1.png" type="Texture" id=20]
-[ext_resource path="res://sprites/player/jump/jump2.png" type="Texture" id=21]
-[ext_resource path="res://sprites/player/jump/jump3.png" type="Texture" id=22]
+[ext_resource path="res://sprites/player/attack/attack0.png" type="Texture" id=19]
+[ext_resource path="res://sprites/player/attack/attack1.png" type="Texture" id=20]
+[ext_resource path="res://sprites/player/attack/attack2.png" type="Texture" id=21]
+[ext_resource path="res://sprites/player/attack/attack3.png" type="Texture" id=22]
+[ext_resource path="res://sprites/player/attack/attack4.png" type="Texture" id=23]
+[ext_resource path="res://sprites/player/attack/attack5.png" type="Texture" id=24]
+[ext_resource path="res://sprites/player/jump/jump0.png" type="Texture" id=25]
+[ext_resource path="res://sprites/player/jump/jump1.png" type="Texture" id=26]
+[ext_resource path="res://sprites/player/jump/jump2.png" type="Texture" id=27]
+[ext_resource path="res://sprites/player/jump/jump3.png" type="Texture" id=28]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 20.2869 )
+extents = Vector2( 15, 20 )
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -43,11 +49,19 @@ animations = [ {
 "name": "fall",
 "speed": 0.0
 }, {
-"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ) ],
+"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ],
+"loop": true,
+"name": "attack",
+"speed": 12.0
+}, {
+"frames": [ ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ) ],
 "loop": false,
 "name": "jump",
 "speed": 12.0
 } ]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 15.3172, 11.0984 )
 
 [node name="Player" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -56,11 +70,18 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "idle"
-frame = 3
+
+[node name="SwordHit" type="Area2D" parent="AnimatedSprite"]
+position = Vector2( 30, 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite/SwordHit"]
+shape = SubResource( 3 )
+disabled = true
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
+[connection signal="area_entered" from="AnimatedSprite/SwordHit" to="." method="_on_SwordHit_area_entered"]
