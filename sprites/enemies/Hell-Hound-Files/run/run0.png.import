@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/hell-hound-walk.png-c03e80e286be7fb396a6c7b2ba4ac67f.stex"
+path="res://.import/run0.png-6fc03237761a4cd1348060198f5c91fb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/enemies/Hell-Hound-Files/hell-hound-walk.png"
-dest_files=[ "res://.import/hell-hound-walk.png-c03e80e286be7fb396a6c7b2ba4ac67f.stex" ]
+source_file="res://sprites/enemies/Hell-Hound-Files/run/run0.png"
+dest_files=[ "res://.import/run0.png-6fc03237761a4cd1348060198f5c91fb.stex" ]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=0
-flags/filter=true
+flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
@@ -30,5 +30,5 @@ process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0
