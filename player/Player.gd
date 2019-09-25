@@ -2,7 +2,7 @@ extends KinematicBody2D
 
 const SPEED = 100
 const GRAVITY = 1200
-const JUMP_POWER = -400
+const JUMP_POWER = -300
 const FLOOR = Vector2(0, -2)
 const SNAP_THRESHOLD = 50
 

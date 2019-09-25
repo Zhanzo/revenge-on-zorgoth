@@ -1,32 +1,52 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://tilesets/CastleBackgroundTileset.tres" type="TileSet" id=1]
-[ext_resource path="res://player/Player.tscn" type="PackedScene" id=2]
-[ext_resource path="res://tilesets/CastleTileset.tres" type="TileSet" id=3]
-[ext_resource path="res://enemies/hell_hound/HellHound.tscn" type="PackedScene" id=4]
+[ext_resource path="res://environment/Gothic-Horror-Files/clouds.png" type="Texture" id=1]
+[ext_resource path="res://environment/Gothic-Horror-Files/town.png" type="Texture" id=2]
+[ext_resource path="res://tilesets/outside/OutsideTileset.tres" type="TileSet" id=3]
+[ext_resource path="res://player/Player.tscn" type="PackedScene" id=4]
+[ext_resource path="res://enemies/hell_hound/HellHound.tscn" type="PackedScene" id=5]
 
 [node name="World" type="Node2D"]
 
-[node name="Background" type="TileMap" parent="."]
-tile_set = ExtResource( 1 )
-cell_size = Vector2( 16, 16 )
-format = 1
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+scroll_ignore_camera_zoom = true
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 40, 125 )
+[node name="Clouds" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2( 0.5, 0.5 )
+motion_mirroring = Vector2( 256, 0.001 )
+
+[node name="Sprite" type="Sprite" parent="ParallaxBackground/Clouds"]
+texture = ExtResource( 1 )
+centered = false
+region_enabled = true
+region_rect = Rect2( 0, 0, 256, 176 )
+
+[node name="Town" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_mirroring = Vector2( 256, 0.001 )
+
+[node name="Sprite2" type="Sprite" parent="ParallaxBackground/Town"]
+texture = ExtResource( 2 )
+centered = false
 
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 8, 8 )
 cell_quadrant_size = 8
 format = 1
-tile_data = PoolIntArray( -1245083, 6, 0, -720795, 6, 0, -262144, 6, 0, -196517, 8, 0, -196513, 8, 0, -196509, 8, 0, 131149, 8, 0, 131153, 8, 0, 131157, 8, 0, 262144, 6, 0, 458815, 8, 0, 458819, 8, 0, 458823, 8, 0, 720896, 6, 0, 852020, 4, 0, 852024, 0, 0, 852028, 0, 0, 852032, 0, 0, 852036, 0, 0, 852040, 0, 0, 852044, 0, 0, 852048, 0, 0, 852052, 0, 0, 852056, 0, 0, 983088, 4, 0, 1114156, 4, 0, 1114166, 7, 0, 1114168, 7, 0, 1114170, 7, 0, 1114172, 7, 0, 1114174, 7, 0, 1114176, 7, 0, 1114178, 7, 0, 1114180, 7, 0, 1114182, 7, 0, 1114184, 7, 0, 1114186, 7, 0, 1114188, 7, 0, 1114190, 7, 0, 1245184, 0, 0, 1245188, 0, 0, 1245192, 0, 0, 1245196, 0, 0, 1245200, 0, 0, 1245204, 0, 0, 1245208, 0, 0, 1245212, 0, 0, 1245216, 0, 0, 1245220, 0, 0, 1245224, 0, 0, 1245234, 7, 0, 1245236, 7, 0, 1245238, 7, 0, 1245240, 7, 0, 1245242, 7, 0, 1245244, 7, 0, 1245246, 7, 0, 1245248, 7, 0, 1245250, 7, 0, 1245252, 7, 0, 1245254, 7, 0, 1245256, 7, 0, 1245258, 7, 0, 1245260, 7, 0, 1245262, 7, 0, 1376300, 7, 0, 1376302, 7, 0, 1376304, 7, 0, 1376306, 7, 0, 1376308, 7, 0, 1376310, 7, 0, 1376312, 7, 0, 1376314, 7, 0, 1376316, 7, 0, 1376318, 7, 0, 1376320, 7, 0, 1376322, 7, 0, 1376324, 7, 0, 1376326, 7, 0, 1376328, 7, 0, 1376330, 7, 0, 1376332, 7, 0, 1376334, 7, 0 )
+tile_data = PoolIntArray( 262144, 11, 0, 852016, 6, 0, 852020, 6, 0, 852024, 4, 0, 852044, 6, 0, 852051, 6, 0, 917544, 3, 0, 917548, 6, 0, 917576, 6, 0, 983108, 6, 0, 1048576, 6, 0, 1048580, 6, 0, 1048584, 6, 0, 1048588, 6, 0, 1048592, 6, 0, 1048596, 6, 0, 1048600, 6, 0, 1048604, 6, 0, 1048608, 6, 0, 1048612, 6, 0, 1048636, 6, 0, 1048640, 6, 0 )
 
-[node name="HellHound" parent="." instance=ExtResource( 4 )]
-position = Vector2( 286, 133 )
+[node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( 50.6732, 111.741 )
+scale = Vector2( 0.5, 0.5 )
 
-[node name="HellHound2" parent="." instance=ExtResource( 4 )]
-position = Vector2( 544, 34 )
+[node name="HellHound" parent="." instance=ExtResource( 5 )]
+position = Vector2( 166.654, 118.078 )
+scale = Vector2( 0.5, 0.5 )
 
-[node name="HellHound3" parent="." instance=ExtResource( 4 )]
-position = Vector2( 779, -41 )
+[node name="HellHound2" parent="." instance=ExtResource( 5 )]
+position = Vector2( 414.266, 95.3372 )
+scale = Vector2( 0.5, 0.5 )
+
+[node name="HellHound3" parent="." instance=ExtResource( 5 )]
+position = Vector2( 511.487, 118.884 )
+scale = Vector2( 0.5, 0.5 )
