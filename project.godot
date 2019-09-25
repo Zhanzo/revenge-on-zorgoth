@@ -80,6 +80,13 @@ jump={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="player"
+2d_physics/layer_2="enemy"
+2d_physics/layer_3="environment"
+2d_physics/layer_4="player_sword"
+
 [rendering]
 
 quality/2d/use_pixel_snap=true

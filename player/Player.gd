@@ -1,18 +1,16 @@
 extends KinematicBody2D
 
-const SPEED = 100
-const GRAVITY = 1200
-const JUMP_POWER = -300
+const SPEED = 50
+const GRAVITY = 600
+const JUMP_POWER = -200
 const FLOOR = Vector2(0, -2)
 const SNAP_THRESHOLD = 50
 
 var velocity = Vector2()
 var snap = false
 var is_attacking = false
-
-
-func _ready():
-	$AnimatedSprite.play("idle")
+var damage = 1
+var health = 1
 
 
 func _physics_process(delta):
@@ -47,7 +45,7 @@ func _physics_process(delta):
 func update_animation(velocity):
 	var animation = "idle"
 	if abs(velocity.x) > 10:
-		$AnimatedSprite.flip_h = velocity.x < 0
+		$AnimatedSprite.scale.x = -1 if velocity.x < 0 else 1
 		animation = "run"
 	
 	if not is_on_floor():
@@ -58,6 +56,12 @@ func update_animation(velocity):
 	
 	if $AnimatedSprite.animation != animation:
 		$AnimatedSprite.play(animation)
+
+
+func hit():
+	health -= 1
+	if health <= 0:
+		get_tree().reload_current_scene()
 
 
 func _handle_sword_hitbox():
@@ -73,5 +77,8 @@ func _on_AnimatedSprite_animation_finished():
 
 
 func _on_SwordHit_body_entered(body):
-	if "HellHound" in body.name:
-		body.dead()
+	body.hit(damage)
+
+
+func _on_VisibilityNotifier2D_screen_exited():
+	get_tree().reload_current_scene()

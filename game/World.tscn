@@ -32,15 +32,17 @@ centered = false
 tile_set = ExtResource( 3 )
 cell_size = Vector2( 8, 8 )
 cell_quadrant_size = 8
+collision_layer = 4
+collision_mask = 3
 format = 1
-tile_data = PoolIntArray( 262144, 11, 0, 852016, 6, 0, 852020, 6, 0, 852024, 4, 0, 852044, 6, 0, 852051, 6, 0, 917544, 3, 0, 917548, 6, 0, 917576, 6, 0, 983108, 6, 0, 1048576, 6, 0, 1048580, 6, 0, 1048584, 6, 0, 1048588, 6, 0, 1048592, 6, 0, 1048596, 6, 0, 1048600, 6, 0, 1048604, 6, 0, 1048608, 6, 0, 1048612, 6, 0, 1048636, 6, 0, 1048640, 6, 0 )
+tile_data = PoolIntArray( -262110, 19, 0, 262144, 11, 0, 852016, 6, 0, 852020, 6, 0, 852024, 4, 0, 852044, 6, 0, 852051, 6, 0, 917544, 3, 0, 917548, 6, 0, 917576, 6, 0, 983108, 6, 0, 1048576, 6, 0, 1048580, 6, 0, 1048584, 6, 0, 1048588, 6, 0, 1048592, 6, 0, 1048596, 6, 0, 1048600, 6, 0, 1048604, 6, 0, 1048608, 6, 0, 1048612, 6, 0, 1048636, 6, 0, 1048640, 6, 0 )
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
 position = Vector2( 50.6732, 111.741 )
 scale = Vector2( 0.5, 0.5 )
 
 [node name="HellHound" parent="." instance=ExtResource( 5 )]
-position = Vector2( 166.654, 118.078 )
+position = Vector2( 166.362, 119.538 )
 scale = Vector2( 0.5, 0.5 )
 
 [node name="HellHound2" parent="." instance=ExtResource( 5 )]
@@ -48,5 +50,5 @@ position = Vector2( 414.266, 95.3372 )
 scale = Vector2( 0.5, 0.5 )
 
 [node name="HellHound3" parent="." instance=ExtResource( 5 )]
-position = Vector2( 511.487, 118.884 )
+position = Vector2( 554.883, 112.092 )
 scale = Vector2( 0.5, 0.5 )

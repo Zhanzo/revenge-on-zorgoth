@@ -18,16 +18,16 @@
 [ext_resource path="res://player/sprites/run/run09.png" type="Texture" id=16]
 [ext_resource path="res://player/sprites/run/run10.png" type="Texture" id=17]
 [ext_resource path="res://player/sprites/run/run11.png" type="Texture" id=18]
-[ext_resource path="res://player/sprites/attack/attack0.png" type="Texture" id=19]
-[ext_resource path="res://player/sprites/attack/attack1.png" type="Texture" id=20]
-[ext_resource path="res://player/sprites/attack/attack2.png" type="Texture" id=21]
-[ext_resource path="res://player/sprites/attack/attack3.png" type="Texture" id=22]
-[ext_resource path="res://player/sprites/attack/attack4.png" type="Texture" id=23]
-[ext_resource path="res://player/sprites/attack/attack5.png" type="Texture" id=24]
-[ext_resource path="res://player/sprites/jump/jump0.png" type="Texture" id=25]
-[ext_resource path="res://player/sprites/jump/jump1.png" type="Texture" id=26]
-[ext_resource path="res://player/sprites/jump/jump2.png" type="Texture" id=27]
-[ext_resource path="res://player/sprites/jump/jump3.png" type="Texture" id=28]
+[ext_resource path="res://player/sprites/jump/jump0.png" type="Texture" id=19]
+[ext_resource path="res://player/sprites/jump/jump1.png" type="Texture" id=20]
+[ext_resource path="res://player/sprites/jump/jump2.png" type="Texture" id=21]
+[ext_resource path="res://player/sprites/jump/jump3.png" type="Texture" id=22]
+[ext_resource path="res://player/sprites/attack/attack0.png" type="Texture" id=23]
+[ext_resource path="res://player/sprites/attack/attack1.png" type="Texture" id=24]
+[ext_resource path="res://player/sprites/attack/attack2.png" type="Texture" id=25]
+[ext_resource path="res://player/sprites/attack/attack3.png" type="Texture" id=26]
+[ext_resource path="res://player/sprites/attack/attack4.png" type="Texture" id=27]
+[ext_resource path="res://player/sprites/attack/attack5.png" type="Texture" id=28]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15, 20 )
@@ -49,14 +49,14 @@ animations = [ {
 "name": "run",
 "speed": 12.0
 }, {
-"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ), ExtResource( 24 ) ],
-"loop": true,
-"name": "attack",
-"speed": 12.0
-}, {
-"frames": [ ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ) ],
+"frames": [ ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ) ],
 "loop": false,
 "name": "jump",
+"speed": 12.0
+}, {
+"frames": [ ExtResource( 23 ), ExtResource( 24 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 27 ), ExtResource( 28 ) ],
+"loop": true,
+"name": "attack",
 "speed": 12.0
 } ]
 
@@ -65,6 +65,7 @@ extents = Vector2( 15.3172, 11.0984 )
 
 [node name="Player" type="KinematicBody2D"]
 z_index = 1
+collision_mask = 4
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true
@@ -80,6 +81,8 @@ animation = "idle"
 
 [node name="SwordHit" type="Area2D" parent="AnimatedSprite"]
 position = Vector2( 30, 5 )
+collision_layer = 8
+collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AnimatedSprite/SwordHit"]
 shape = SubResource( 3 )
@@ -92,5 +95,10 @@ limit_top = 0
 limit_bottom = 144
 smoothing_enabled = true
 editor_draw_limits = true
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 0, 4 )
+scale = Vector2( 1.5, 2 )
 [connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
 [connection signal="body_entered" from="AnimatedSprite/SwordHit" to="." method="_on_SwordHit_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
