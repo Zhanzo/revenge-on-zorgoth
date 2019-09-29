@@ -9,8 +9,21 @@ const SNAP_THRESHOLD = 50
 var velocity = Vector2()
 var snap = false
 var is_attacking = false
+var is_hit = false
+var level = 1
 var damage = 1
-var health = 1
+var health = 3
+var max_health = 3
+var required_experience = get_required_experience(level + 1)
+var experience = 0
+
+signal health_changed(health, max_health)
+signal exp_changed(experience, required_experience)
+
+
+func _ready():
+	emit_signal("health_changed", health, max_health)
+	emit_signal("exp_changed", experience, required_experience)
 
 
 func _physics_process(delta):
@@ -39,7 +52,7 @@ func _physics_process(delta):
 		snap = true
 	
 	update_animation(velocity)
-	_handle_sword_hitbox()
+	handle_sword_hitbox()
 	
 
 func update_animation(velocity):
@@ -54,17 +67,40 @@ func update_animation(velocity):
 	if is_attacking:
 		animation = "attack"
 	
+	if is_hit:
+		animation = "hurt"
+	
 	if $AnimatedSprite.animation != animation:
 		$AnimatedSprite.play(animation)
 
 
 func hit():
-	health -= 1
-	if health <= 0:
-		get_tree().reload_current_scene()
+	if not is_hit:
+		is_hit = true
+		health -= 1
+		$AnimatedSprite.play("hurt")
+		emit_signal("health_changed", health, max_health)
 
 
-func _handle_sword_hitbox():
+func gain_exp(new_exp):
+	experience += new_exp
+	while experience >= required_experience:
+		experience -= required_experience
+		level_up()
+	emit_signal("health_changed", health, max_health)
+	emit_signal("exp_changed", experience, required_experience)
+		
+
+func get_required_experience(level):
+	return round(pow(level, 1.8) + level * 1)
+
+func level_up():
+	level += 1
+	max_health += 1
+	health = max_health
+	required_experience = get_required_experience(level + 1)
+
+func handle_sword_hitbox():
 	if is_attacking: 
 		if$AnimatedSprite.get_frame() == 2:
 			$AnimatedSprite/SwordHit/CollisionShape2D.disabled = false
@@ -73,8 +109,12 @@ func _handle_sword_hitbox():
 
 
 func _on_AnimatedSprite_animation_finished():
-	is_attacking = false
-
+	if is_attacking:
+		is_attacking = false
+	elif is_hit:
+		is_hit = false
+		if health <= 0:
+			get_tree().reload_current_scene()
 
 func _on_SwordHit_body_entered(body):
 	body.hit(damage)
@@ -82,3 +122,7 @@ func _on_SwordHit_body_entered(body):
 
 func _on_VisibilityNotifier2D_screen_exited():
 	get_tree().reload_current_scene()
+
+
+func _on_HellHound_give_exp(exp_worth):
+	gain_exp(exp_worth)
