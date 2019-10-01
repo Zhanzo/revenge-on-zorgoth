@@ -3,19 +3,21 @@ extends KinematicBody2D
 const SPEED = 50
 const GRAVITY = 600
 const JUMP_POWER = -200
-const FLOOR = Vector2(0, -2)
 const SNAP_THRESHOLD = 50
 
 var velocity = Vector2()
+
 var snap = false
 var is_attacking = false
-var is_hit = false
+var is_hurt = false
+
 var level = 1
 var damage = 1
 var health = 3
 var max_health = 3
 var required_experience = get_required_experience(level + 1)
 var experience = 0
+
 
 signal health_changed(health, max_health)
 signal exp_changed(experience, required_experience)
@@ -25,18 +27,16 @@ func _ready():
 	emit_signal("health_changed", health, max_health)
 	emit_signal("exp_changed", experience, required_experience)
 
-
 func _physics_process(delta):
 	velocity.x = 0
-	if not is_attacking:
-		var direction_x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-		velocity.x = direction_x * SPEED
+	var direction_x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
+	velocity.x = direction_x * SPEED
 	
 	if Input.is_action_just_pressed("jump") and snap and not is_attacking:
 		velocity.y = JUMP_POWER
 		snap = false
 	
-	if Input.is_action_just_pressed("attack") and snap:
+	if Input.is_action_just_pressed("attack") and snap and not is_attacking and not is_hurt:
 		is_attacking = true
 	
 	velocity.y += GRAVITY * delta
@@ -51,11 +51,10 @@ func _physics_process(delta):
 	if just_landed:
 		snap = true
 	
-	update_animation(velocity)
+	update_animation()
 	handle_sword_hitbox()
-	
 
-func update_animation(velocity):
+func update_animation():
 	var animation = "idle"
 	if abs(velocity.x) > 10:
 		$AnimatedSprite.scale.x = -1 if velocity.x < 0 else 1
@@ -67,17 +66,19 @@ func update_animation(velocity):
 	if is_attacking:
 		animation = "attack"
 	
-	if is_hit:
+	if is_hurt:
 		animation = "hurt"
 	
 	if $AnimatedSprite.animation != animation:
 		$AnimatedSprite.play(animation)
 
 
-func hit():
-	if not is_hit:
-		is_hit = true
-		health -= 1
+func hurt(damage_to_player):
+	if not is_hurt and not is_attacking:
+		is_hurt = true
+		health -= damage_to_player
+		if health <= 0:
+			set_collision_layer_bit(0, false)
 		$AnimatedSprite.play("hurt")
 		emit_signal("health_changed", health, max_health)
 
@@ -107,22 +108,23 @@ func handle_sword_hitbox():
 		elif $AnimatedSprite.get_frame() == 4:
 			$AnimatedSprite/SwordHit/CollisionShape2D.disabled = true
 
-
-func _on_AnimatedSprite_animation_finished():
-	if is_attacking:
-		is_attacking = false
-	elif is_hit:
-		is_hit = false
-		if health <= 0:
-			get_tree().reload_current_scene()
-
 func _on_SwordHit_body_entered(body):
 	body.hit(damage)
-
 
 func _on_VisibilityNotifier2D_screen_exited():
 	get_tree().reload_current_scene()
 
-
 func _on_HellHound_give_exp(exp_worth):
+	gain_exp(exp_worth)
+
+func _on_AnimatedSprite_animation_finished():
+	if is_attacking:
+		is_attacking = false
+	if is_hurt:
+		is_hurt = false
+		if health <= 0:
+			get_tree().reload_current_scene()
+
+
+func _on_Zorgoth_give_exp(exp_worth):
 	gain_exp(exp_worth)
