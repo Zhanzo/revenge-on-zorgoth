@@ -1,11 +1,11 @@
 extends KinematicBody2D
+class_name Enemy
 
 const GRAVITY = 10
 const SPEED = 30
 const SNAP_THRESHOLD = 50
-const Player = preload("res://player/Player.gd")
 
-var velocity = Vector2()
+var velocity = Vector2.ZERO
 var direction = -1
 
 export var health = 1
@@ -22,7 +22,8 @@ func hit(damage):
 
 func move():
 	if $FrontRayCast.is_colliding() and $GroundRayCast.is_colliding():
-		velocity.x = SPEED * direction
+		return SPEED * direction
+	return 0
 
 func turn():
 	if $BackRayCast.is_colliding():
@@ -32,5 +33,5 @@ func turn():
 func check_for_player_collision():
 	for i in range(get_slide_count()):
 		var collider = get_slide_collision(i).collider
-		if collider is Player:
+		if collider.is_in_group("player"):
 			collider.hurt(damage_to_player)

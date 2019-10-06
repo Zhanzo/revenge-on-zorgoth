@@ -1,9 +1,7 @@
-extends "res://enemies/Enemy.gd"
+extends Enemy
 
 func _physics_process(delta):
-	velocity.x = 0
-	
-	move()
+	velocity.x = move()
 	turn()
 	
 	velocity.y += GRAVITY * delta
@@ -17,9 +15,7 @@ func _physics_process(delta):
 func update_animation():
 	var animation = "idle"
 	if abs(velocity.x) > 0:
-		print("walking...")
 		animation = "walk"
 	
 	if $AnimationPlayer.current_animation != animation:
-		$AnimationPlayer.stop()
-		$AnimationPlayer.play(animation)
+		$AnimationPlayer.play(animation, 0)

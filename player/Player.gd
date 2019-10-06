@@ -1,11 +1,12 @@
 extends KinematicBody2D
+class_name Player
 
 const SPEED = 50
 const GRAVITY = 600
 const JUMP_POWER = -200
 const SNAP_THRESHOLD = 50
 
-var velocity = Vector2()
+var velocity = Vector2.ZERO
 
 var snap = false
 var is_attacking = false
@@ -21,7 +22,7 @@ var experience = 0
 
 signal health_changed(health, max_health)
 signal exp_changed(experience, required_experience)
-
+signal died
 
 func _ready():
 	emit_signal("health_changed", health, max_health)
@@ -52,16 +53,27 @@ func _physics_process(delta):
 		snap = true
 	
 	update_animation()
-	handle_sword_hitbox()
+	check_for_enemy_collision()
+	
+func flip(to_right):
+	if to_right:
+		$Sprites.scale.x = 1
+		$CollisionShape2D.scale.x = 1
+	else:
+		$Sprites.scale.x = -1
+		$CollisionShape2D.scale.x = -1
 
 func update_animation():
 	var animation = "idle"
-	if abs(velocity.x) > 10:
-		$AnimatedSprite.scale.x = -1 if velocity.x < 0 else 1
+	if abs(velocity.x) > 0:
 		animation = "run"
+		flip(velocity.x >= 0)
 	
 	if not is_on_floor():
-		animation = "jump" if velocity.y < 0 else "fall"
+		if velocity.y < 0:
+			animation = "jump"
+		else:
+			animation = "fall"
 	
 	if is_attacking:
 		animation = "attack"
@@ -69,8 +81,8 @@ func update_animation():
 	if is_hurt:
 		animation = "hurt"
 	
-	if $AnimatedSprite.animation != animation:
-		$AnimatedSprite.play(animation)
+	if $AnimationPlayer.current_animation != animation:
+		$AnimationPlayer.play(animation)
 
 
 func hurt(damage_to_player):
@@ -79,7 +91,7 @@ func hurt(damage_to_player):
 		health -= damage_to_player
 		if health <= 0:
 			set_collision_layer_bit(0, false)
-		$AnimatedSprite.play("hurt")
+		$AnimationPlayer.play("hurt")
 		emit_signal("health_changed", health, max_health)
 
 
@@ -101,30 +113,22 @@ func level_up():
 	health = max_health
 	required_experience = get_required_experience(level + 1)
 
-func handle_sword_hitbox():
-	if is_attacking: 
-		if$AnimatedSprite.get_frame() == 2:
-			$AnimatedSprite/SwordHit/CollisionShape2D.disabled = false
-		elif $AnimatedSprite.get_frame() == 4:
-			$AnimatedSprite/SwordHit/CollisionShape2D.disabled = true
-
 func _on_SwordHit_body_entered(body):
 	body.hit(damage)
 
 func _on_VisibilityNotifier2D_screen_exited():
 	get_tree().reload_current_scene()
 
-func _on_HellHound_give_exp(exp_worth):
-	gain_exp(exp_worth)
-
-func _on_AnimatedSprite_animation_finished():
-	if is_attacking:
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name == "attack":
 		is_attacking = false
-	if is_hurt:
+	elif anim_name == "hurt":
 		is_hurt = false
 		if health <= 0:
-			get_tree().reload_current_scene()
+			emit_signal("died")
 
-
-func _on_Zorgoth_give_exp(exp_worth):
-	gain_exp(exp_worth)
+func check_for_enemy_collision():
+	for i in range(get_slide_count()):
+		var collider = get_slide_collision(i).collider
+		if collider.is_in_group("enemies"):
+			hurt(collider.damage_to_player)

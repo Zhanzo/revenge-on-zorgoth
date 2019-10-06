@@ -8,15 +8,32 @@
 
 config_version=4
 
-_global_script_classes=[  ]
+_global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://enemies/Enemy.gd"
+}, {
+"base": "Node2D",
+"class": "Level",
+"language": "GDScript",
+"path": "res://levels/level_template/LevelTemplate.gd"
+}, {
+"base": "KinematicBody2D",
+"class": "Player",
+"language": "GDScript",
+"path": "res://player/Player.gd"
+} ]
 _global_script_class_icons={
-
+"Enemy": "",
+"Level": "",
+"Player": ""
 }
 
 [application]
 
 config/name="RevengeOnZorgoth"
-run/main_scene="res://game/StageOne.tscn"
+run/main_scene="res://title_screen/TitleScreen.tscn"
 config/icon="res://icon.png"
 
 [display]
