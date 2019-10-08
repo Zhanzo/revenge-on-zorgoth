@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
 [ext_resource path="res://player/sprites/gothic-hero-idle.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://player/sprites/gothic-hero-attack.png" type="Texture" id=4]
 [ext_resource path="res://player/sprites/gothic-hero-jump.png" type="Texture" id=5]
 [ext_resource path="res://player/sprites/gothic-hero-hurt.png" type="Texture" id=6]
+[ext_resource path="res://player/level_up/LevelUp.tscn" type="PackedScene" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15.3172, 11.0984 )
@@ -644,6 +645,10 @@ editor_draw_limits = true
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 position = Vector2( 0, 4 )
 scale = Vector2( 1.5, 2 )
+
+[node name="LevelUp" parent="." instance=ExtResource( 7 )]
+position = Vector2( 0, 12 )
+scale = Vector2( 0.5, 0.5 )
 [connection signal="body_entered" from="Sprites/AttackSprite/SwordHit" to="." method="_on_SwordHit_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

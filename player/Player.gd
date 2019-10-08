@@ -108,6 +108,7 @@ func get_required_experience(level):
 	return round(pow(level, 1.8) + level * 1)
 
 func level_up():
+	$LevelUp/AnimationPlayer.play("default")
 	level += 1
 	max_health += 1
 	health = max_health
