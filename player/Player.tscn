@@ -647,8 +647,10 @@ position = Vector2( 0, 4 )
 scale = Vector2( 1.5, 2 )
 
 [node name="LevelUp" parent="." instance=ExtResource( 7 )]
-position = Vector2( 0, 12 )
-scale = Vector2( 0.5, 0.5 )
+margin_left = -16.0
+margin_top = -16.0
+margin_right = -16.0
+margin_bottom = -16.0
 [connection signal="body_entered" from="Sprites/AttackSprite/SwordHit" to="." method="_on_SwordHit_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
