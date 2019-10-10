@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://levels/level_template/LevelTemplate.tscn" type="PackedScene" id=1]
+[ext_resource path="res://levels/level2/Level2.gd" type="Script" id=2]
+
+[node name="Level2" index="0" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="TileMap" parent="." index="0"]
+position = Vector2( 0, -1 )
+tile_data = PoolIntArray( 1048643, 36, 0, 1310720, 36, 0, 1441852, 27, 0, 1441858, 27, 0, 1441864, 27, 0, 1572918, 27, 0, 1703936, 36, 0, 1703980, 32, 0, 1703984, 27, 0, 1835048, 32, 0, 1966116, 32, 0, 2097152, 27, 0, 2097158, 27, 0, 2097164, 27, 0, 2097170, 27, 0, 2097176, 27, 0, 2097182, 27, 0 )

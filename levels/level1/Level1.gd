@@ -1,7 +1,7 @@
 extends Level
 
 func _ready():
-	next_level = "res://title_screen/TitleScreen.tscn"
+	next_level = "res://levels/level2/Level2.tscn"
 
 func _on_Player_died():
 	if $Player.position.x > 1110:
