@@ -12,6 +12,10 @@ func _ready():
 func _on_PlayerHit_body_entered(body):
 	body.hit(damage_to_player)
 
+func _on_HitAnimationPlayer_animation_finished(anim_name):
+	if anim_name == "die":
+		queue_free()
+
 func _physics_process(delta):
 	direction_x *= turn()
 	_velocity = calculate_move_velocity(delta)
@@ -35,6 +39,7 @@ func hit(damage):
 		health -= damage
 		if health <= 0:
 			$HitAnimationPlayer.play("die")
+			$AnimationPlayer.stop()
 			set_collision_mask_bit(3, false)
 			set_physics_process(false)
 			return exp_worth
@@ -45,9 +50,11 @@ func flip(to_right):
 	if to_right:
 		$Sprites.scale.x = -1
 		$CollisionShape2D.scale.x = -1
+		$GroundRayCast.scale.x = -1
 	else:
 		$Sprites.scale.x = 1
 		$CollisionShape2D.scale.x = 1
+		$GroundRayCast.scale.x = 1
 
 func update_animation():
 	var animation = "idle"
@@ -57,7 +64,3 @@ func update_animation():
 	
 	if $AnimationPlayer.current_animation != animation:
 		$AnimationPlayer.play(animation, 0)
-
-func _on_HitAnimationPlayer_animation_finished(anim_name):
-	if anim_name == "die":
-		queue_free()

@@ -2,7 +2,7 @@ extends KinematicBody2D
 class_name Entity
 
 const FLOOR_NORMAL = Vector2.UP
-const SNAP_THRESHOLD = 50
+const SNAP_THRESHOLD = 4
 const GRAVITY = 600
 
 export var speed = 60

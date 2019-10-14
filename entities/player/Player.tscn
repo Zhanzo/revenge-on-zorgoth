@@ -665,11 +665,10 @@ smoothing_enabled = true
 drag_margin_left = 0.0
 drag_margin_right = 0.0
 editor_draw_limits = true
-editor_draw_drag_margin = true
 
 [node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
 position = Vector2( 0, 4 )
-scale = Vector2( 1.5, 2 )
+rect = Rect2( -15, -20, 30, 40 )
 
 [node name="LevelUp" parent="." instance=ExtResource( 7 )]
 margin_left = -16.0

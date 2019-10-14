@@ -4,8 +4,10 @@ export var damage_to_player = 5
 export var exp_worth = 10
 
 var is_attacking = false
-var attack_available = true
+var is_attack_available = true
 var is_dead = false
+
+signal screen_exited
 
 func _on_BreathArea_body_entered(body):
 	body.hit(damage_to_player)
@@ -21,15 +23,8 @@ func _on_HitAnimationPlayer_animation_finished(anim_name):
 	if anim_name == "die":
 		queue_free()
 
-func _on_BreathDetectionArea_body_entered(body):
-	if attack_available:
-		attack_available = false
-		is_attacking = true
-		$AnimationPlayer.play("attack")
-		$AttackCD.start()
-
 func _on_AttackCD_timeout():
-	attack_available = true
+	is_attack_available = true
 
 func _physics_process(delta):
 	_velocity.y += GRAVITY * delta
@@ -37,7 +32,16 @@ func _physics_process(delta):
 	var snap_vector = Vector2(0, 32)
 	_velocity = move_and_slide_with_snap(_velocity, snap_vector, FLOOR_NORMAL, SNAP_THRESHOLD)
 	
+	attack()
 	update_animation()
+
+func attack():
+	if $BreathRayCast.is_colliding() and is_attack_available:
+		is_attack_available = false
+		is_attacking = true
+		$AnimationPlayer.play("attack")
+		$AttackCD.start()
+		
 
 func update_animation():
 	var animation = "idle"
@@ -53,8 +57,12 @@ func hit(damage):
 		health -= damage
 		if health <= 0:
 			$HitAnimationPlayer.play("die")
+			$AnimationPlayer.stop()
 			set_collision_mask_bit(3, false)
 			set_physics_process(false)
 			return exp_worth
 		$HitAnimationPlayer.play("hit")
 	return 0
+
+func _on_VisibilityNotifier2D_screen_exited():
+	emit_signal("screen_exited")
