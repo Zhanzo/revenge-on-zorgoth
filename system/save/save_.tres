@@ -1,0 +1,14 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://system/SaveGame.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+data = {
+"player_damage": 1,
+"player_exp": 6.0,
+"player_exp_req": 16.0,
+"player_health": 5,
+"player_level": 3,
+"player_max_health": 5
+}

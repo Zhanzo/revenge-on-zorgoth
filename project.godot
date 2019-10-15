@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "Level",
 "language": "GDScript",
 "path": "res://levels/level_template/LevelTemplate.gd"
+}, {
+"base": "Resource",
+"class": "SaveGame",
+"language": "GDScript",
+"path": "res://system/SaveGame.gd"
 } ]
 _global_script_class_icons={
 "Entity": "",
-"Level": ""
+"Level": "",
+"SaveGame": ""
 }
 
 [application]

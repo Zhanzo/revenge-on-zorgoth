@@ -577,11 +577,12 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="RectangleShape2D" id=9]
-extents = Vector2( 15, 20 )
+[sub_resource type="CapsuleShape2D" id=9]
+radius = 14.0
+height = 14.0
 
 [node name="Player" type="KinematicBody2D" groups=[
-"player",
+"save",
 ]]
 z_index = 1
 collision_mask = 4
@@ -595,7 +596,6 @@ health = 3
 [node name="Sprites" type="Node2D" parent="."]
 
 [node name="IdleSprite" type="Sprite" parent="Sprites"]
-visible = false
 texture = ExtResource( 2 )
 hframes = 4
 
@@ -606,7 +606,6 @@ texture = ExtResource( 3 )
 hframes = 12
 
 [node name="AttackSprite" type="Sprite" parent="Sprites"]
-editor/display_folded = true
 visible = false
 texture = ExtResource( 4 )
 hframes = 6
@@ -614,7 +613,7 @@ frame = 5
 
 [node name="SwordHit" type="Area2D" parent="Sprites/AttackSprite"]
 position = Vector2( 30, 5 )
-collision_layer = 8
+collision_layer = 0
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprites/AttackSprite/SwordHit"]
@@ -622,6 +621,7 @@ shape = SubResource( 1 )
 disabled = true
 
 [node name="JumpSprite" type="Sprite" parent="Sprites"]
+visible = false
 texture = ExtResource( 5 )
 hframes = 4
 frame = 3
@@ -666,10 +666,6 @@ drag_margin_left = 0.0
 drag_margin_right = 0.0
 editor_draw_limits = true
 
-[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
-position = Vector2( 0, 4 )
-rect = Rect2( -15, -20, 30, 40 )
-
 [node name="LevelUp" parent="." instance=ExtResource( 7 )]
 margin_left = -16.0
 margin_top = -16.0
@@ -678,4 +674,3 @@ margin_bottom = -16.0
 [connection signal="body_entered" from="Sprites/AttackSprite/SwordHit" to="." method="_on_SwordHit_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="animation_finished" from="HitAnimationPlayer" to="." method="_on_HitAnimationPlayer_animation_finished"]
-[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

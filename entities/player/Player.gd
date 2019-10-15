@@ -1,15 +1,18 @@
 extends Entity
 
+onready var SAVE_KEY = "player_"
+
 const JUMP_POWER = -200
 
 var is_attacking = false
+var is_jumping = false
+var used_wall_jump = false
 
 var level = 1
 var damage = 1
 var max_health = 3
 var required_experience = get_required_experience(level + 1)
 var experience = 0
-
 
 signal health_changed(health, max_health)
 signal exp_changed(experience, required_experience)
@@ -23,9 +26,6 @@ func _on_SwordHit_body_entered(body):
 	var gained_exp = body.hit(damage)
 	gain_exp(gained_exp)
 
-func _on_VisibilityNotifier2D_screen_exited():
-	emit_signal("died")
-
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "attack":
 		is_attacking = false
@@ -36,20 +36,19 @@ func _physics_process(delta):
 	var direction_x = get_x_direction()
 	_velocity = calculate_move_velocity(direction_x, delta)
 	
-	var snap_vector = get_snap_vector()
-	_velocity = move_and_slide_with_snap(_velocity, snap_vector, FLOOR_NORMAL, SNAP_THRESHOLD)
+	_velocity = move_and_slide(_velocity, FLOOR_NORMAL, true)
 	
 	_velocity.y = get_air_velocity()
-	snap = get_snap_value()
+	set_jump_value()
 	is_attacking = get_attack_state()
+	
+	if position.y > 144:
+		emit_signal("died")
 	
 	update_animation()
 
 func get_x_direction():
 	return Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
-
-func get_snap_vector():
-	return Vector2(0, 32) if snap else Vector2()
 
 func calculate_move_velocity(
 		direction_x,
@@ -57,9 +56,15 @@ func calculate_move_velocity(
 	):
 	var out = _velocity
 	out.x = speed * direction_x
-	if Input.is_action_pressed("jump") and snap and not is_attacking:
-		out.y = JUMP_POWER
-		snap = false
+	if Input.is_action_just_pressed("jump"):
+		if not is_jumping and not is_attacking:
+			print("regular jump")
+			out.y = JUMP_POWER
+			is_jumping = true
+		elif is_on_wall() and not used_wall_jump and not is_attacking:
+			print("wall jump")
+			out.y = JUMP_POWER
+			used_wall_jump = true
 	out.y += GRAVITY * delta
 	return out
 
@@ -68,11 +73,13 @@ func get_air_velocity():
 		return 0
 	return _velocity.y
 
-func get_snap_value():
-	return is_on_floor() and not snap
+func set_jump_value():
+	if is_on_floor() and is_jumping:
+		used_wall_jump = false
+		is_jumping = false
 
 func get_attack_state():
-	if Input.is_action_pressed("attack") and not is_attacking and snap:
+	if Input.is_action_just_pressed("attack") and not is_attacking and not is_jumping:
 		return true
 	return is_attacking
 
@@ -95,14 +102,13 @@ func update_animation():
 		$AnimationPlayer.play(animation)
 
 func hit(damage_to_player):
-	if not is_attacking:
-		health -= damage_to_player
-		emit_signal("health_changed", health, max_health)
-		if health <= 0:
-			$AnimationPlayer.play("die")
-			set_physics_process(false)
-		else:
-			$HitAnimationPlayer.play("hit")
+	health -= damage_to_player
+	emit_signal("health_changed", health, max_health)
+	if health <= 0:
+		$AnimationPlayer.play("die")
+		set_physics_process(false)
+	else:
+		$HitAnimationPlayer.play("hit")
 
 func gain_exp(new_exp):
 	var old_level = level
@@ -123,3 +129,21 @@ func level_up():
 	max_health += 1
 	health = max_health
 	required_experience = get_required_experience(level + 1)
+
+func save_stats(save_game):
+	save_game.data[SAVE_KEY + "health"] = health
+	save_game.data[SAVE_KEY + "max_health"] = max_health
+	save_game.data[SAVE_KEY + "exp"] = experience
+	save_game.data[SAVE_KEY + "exp_req"] = required_experience
+	save_game.data[SAVE_KEY + "damage"] = damage
+	save_game.data[SAVE_KEY + "level"] = level
+	
+func load_stats(save_game):
+	health = save_game.data[SAVE_KEY + "health"]
+	max_health = save_game.data[SAVE_KEY + "max_health"]
+	experience = save_game.data[SAVE_KEY + "exp"]
+	required_experience = save_game.data[SAVE_KEY + "exp_req"]
+	damage = save_game.data[SAVE_KEY + "damage"]
+	level = save_game.data[SAVE_KEY + "level"]
+	emit_signal("health_changed", health, max_health)
+	emit_signal("exp_changed", experience, required_experience)

@@ -8,6 +8,7 @@ var is_attack_available = true
 var is_dead = false
 
 signal screen_exited
+signal screen_entered
 
 func _on_BreathArea_body_entered(body):
 	body.hit(damage_to_player)
@@ -26,11 +27,16 @@ func _on_HitAnimationPlayer_animation_finished(anim_name):
 func _on_AttackCD_timeout():
 	is_attack_available = true
 
+func _on_VisibilityNotifier2D_screen_exited():
+	emit_signal("screen_exited")
+
+func _on_VisibilityNotifier2D_screen_entered():
+	emit_signal("screen_entered")
+
 func _physics_process(delta):
 	_velocity.y += GRAVITY * delta
 	
-	var snap_vector = Vector2(0, 32)
-	_velocity = move_and_slide_with_snap(_velocity, snap_vector, FLOOR_NORMAL, SNAP_THRESHOLD)
+	_velocity = move_and_slide(_velocity, FLOOR_NORMAL, true)
 	
 	attack()
 	update_animation()
@@ -41,7 +47,6 @@ func attack():
 		is_attacking = true
 		$AnimationPlayer.play("attack")
 		$AttackCD.start()
-		
 
 func update_animation():
 	var animation = "idle"
@@ -63,6 +68,3 @@ func hit(damage):
 			return exp_worth
 		$HitAnimationPlayer.play("hit")
 	return 0
-
-func _on_VisibilityNotifier2D_screen_exited():
-	emit_signal("screen_exited")

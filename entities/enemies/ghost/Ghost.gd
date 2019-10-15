@@ -38,10 +38,9 @@ func _on_PlayerHitArea_body_entered(body):
 	body.hit(damage_to_player)
 
 func _physics_process(delta):
-	direction_x = turn()
+	turn()
 	_velocity = calculate_move_velocity(delta)
-	var snap_vector = Vector2(0, 20)
-	_velocity = move_and_slide_with_snap(_velocity, snap_vector, FLOOR_NORMAL, SNAP_THRESHOLD)
+	_velocity = move_and_slide(_velocity, FLOOR_NORMAL, true)
 	
 	choose_visibility()
 	attack()
@@ -83,12 +82,12 @@ func turn():
 			$Sprites.scale.x = -1
 			$CollisionShape2D.scale.x = -1
 			$RayCasts.scale.x = -1
-			return 1
+			direction_x = 1
 		else:
 			$Sprites.scale.x = 1
 			$CollisionShape2D.scale.x = 1
 			$RayCasts.scale.x = 1
-			return -1
+			direction_x = -1
 
 func hit(damage):
 	if not is_dead and is_visible:

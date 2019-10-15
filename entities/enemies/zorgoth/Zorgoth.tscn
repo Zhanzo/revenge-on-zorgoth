@@ -217,4 +217,5 @@ scale = Vector2( 3.1, 4.7 )
 [connection signal="timeout" from="AttackCD" to="." method="_on_AttackCD_timeout"]
 [connection signal="body_entered" from="BreathArea" to="." method="_on_BreathArea_body_entered"]
 [connection signal="body_entered" from="PlayerHit" to="." method="_on_PlayerHit_body_entered"]
+[connection signal="screen_entered" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_entered"]
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
