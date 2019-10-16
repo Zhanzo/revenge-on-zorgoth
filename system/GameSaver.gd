@@ -2,7 +2,7 @@ extends Node
 
 const SaveGame = preload("res://system/SaveGame.gd")
 var SAVE_FOLDER = "res://system/save"
-var SAVE_NAME_TEMPLATE = "save_.tres"
+var SAVE_NAME_TEMPLATE = "save.tres"
 
 func save_stats():
 	"""

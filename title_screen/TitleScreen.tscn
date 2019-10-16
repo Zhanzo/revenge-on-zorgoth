@@ -6,9 +6,9 @@
 [ext_resource path="res://title_screen/fonts/menu_font.tres" type="DynamicFont" id=4]
 [ext_resource path="res://title_screen/sprites/zorgoth.png" type="Texture" id=5]
 
-[sub_resource type="StyleBoxEmpty" id=1]
-
 [sub_resource type="StyleBoxEmpty" id=2]
+
+[sub_resource type="StyleBoxEmpty" id=1]
 
 [sub_resource type="StyleBoxEmpty" id=3]
 
@@ -23,6 +23,7 @@ texture = ExtResource( 2 )
 centered = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
+editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_constants/separation = 10
@@ -54,27 +55,27 @@ margin_bottom = 94.0
 custom_constants/separation = 5
 alignment = 1
 
-[node name="NewGame" type="Button" parent="VBoxContainer/HBoxContainer/Buttons"]
+[node name="Continue" type="Button" parent="VBoxContainer/HBoxContainer/Buttons"]
 margin_top = 13.0
 margin_right = 120.0
 margin_bottom = 32.0
-custom_styles/focus = SubResource( 1 )
-custom_fonts/font = ExtResource( 4 )
-custom_colors/font_color = Color( 0.552941, 0.596078, 0.0392157, 1 )
-custom_colors/font_color_hover = Color( 0.286275, 0.27451, 0.27451, 1 )
-text = "New Game"
-flat = true
-align = 0
-
-[node name="Continue" type="Button" parent="VBoxContainer/HBoxContainer/Buttons"]
-margin_top = 37.0
-margin_right = 120.0
-margin_bottom = 56.0
 custom_styles/focus = SubResource( 2 )
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0.552941, 0.596078, 0.0392157, 1 )
 custom_colors/font_color_hover = Color( 0.286275, 0.27451, 0.27451, 1 )
 text = "Continue"
+flat = true
+align = 0
+
+[node name="NewGame" type="Button" parent="VBoxContainer/HBoxContainer/Buttons"]
+margin_top = 37.0
+margin_right = 120.0
+margin_bottom = 56.0
+custom_styles/focus = SubResource( 1 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color = Color( 0.552941, 0.596078, 0.0392157, 1 )
+custom_colors/font_color_hover = Color( 0.286275, 0.27451, 0.27451, 1 )
+text = "New Game"
 flat = true
 align = 0
 
@@ -99,6 +100,6 @@ size_flags_vertical = 3
 texture = ExtResource( 5 )
 expand = true
 stretch_mode = 6
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/Buttons/NewGame" to="." method="_on_NewGame_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Buttons/Continue" to="." method="_on_Continue_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/Buttons/NewGame" to="." method="_on_NewGame_pressed"]
 [connection signal="pressed" from="VBoxContainer/HBoxContainer/Buttons/ExitGame" to="." method="_on_ExitGame_pressed"]

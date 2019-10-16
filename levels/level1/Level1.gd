@@ -25,3 +25,5 @@ func _on_Zorgoth_screen_exited():
 
 func _on_Zorgoth_screen_entered():
 	is_zorgoth_encountered = true
+
+
