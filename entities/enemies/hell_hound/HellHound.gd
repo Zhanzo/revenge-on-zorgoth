@@ -2,7 +2,7 @@ extends Entity
 
 export var exp_worth = 1
 export var damage_to_player = 1
-export(NodePath) var player_nodepath
+export (NodePath) var player_nodepath
 
 var direction_x = -1
 var player_node

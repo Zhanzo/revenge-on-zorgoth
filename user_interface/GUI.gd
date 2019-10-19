@@ -1,6 +1,5 @@
 extends Control
 
-
 signal health_changed(health, max_health)
 signal exp_changed(experience, max_exp)
 

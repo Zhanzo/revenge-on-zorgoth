@@ -6,9 +6,9 @@
 script = ExtResource( 1 )
 data = {
 "player_damage": 1,
-"player_exp": 23.0,
-"player_exp_req": 50.0,
+"player_exp": 1.0,
+"player_exp_req": 23.0,
 "player_health": 6,
-"player_level": 7,
-"player_max_health": 9
+"player_level": 4,
+"player_max_health": 6
 }

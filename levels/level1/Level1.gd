@@ -3,9 +3,6 @@ extends Level
 var is_zorgoth_encountered = false
 var player_died_by_zorgoth = false
 
-func _ready():
-	next_level = "res://levels/level2/Level2.tscn"
-
 func _on_Player_died():
 	if is_zorgoth_encountered:
 		$Level/Player.health = $Level/Player.max_health
@@ -33,4 +30,4 @@ func _on_Zorgoth_screen_entered():
 
 func _on_LevelEnd_body_entered(body):
 	$GameSaver.save_stats()
-	get_tree().change_scene(next_level)
+	get_tree().change_scene_to(next_level)
