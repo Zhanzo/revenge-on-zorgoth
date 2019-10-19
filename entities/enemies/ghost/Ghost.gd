@@ -104,6 +104,7 @@ func hit(damage):
 			set_physics_process(false)
 			return exp_worth
 		$HitAnimationPlayer.play("hit")
+		return 0
 	return 0
 
 func check_for_player_collision():

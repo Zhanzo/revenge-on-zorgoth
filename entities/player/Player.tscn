@@ -594,6 +594,7 @@ speed = 100
 health = 3
 
 [node name="Sprites" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="IdleSprite" type="Sprite" parent="Sprites"]
 texture = ExtResource( 2 )
