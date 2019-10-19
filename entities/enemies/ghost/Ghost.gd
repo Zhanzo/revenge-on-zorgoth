@@ -2,8 +2,10 @@ extends Entity
 
 export var exp_worth = 5
 export var damage_to_player = 2
+export(NodePath) var player_nodepath
 
 var direction_x = -1
+var player_node
 
 var is_visible = false
 var is_attack_available = true
@@ -11,6 +13,9 @@ var is_attacking = false
 var is_appearing = false
 var is_vanishing = false
 var is_dead = false
+
+func _ready():
+	player_node = get_node(player_nodepath)
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "appear":
@@ -34,9 +39,6 @@ func _on_AttackCD_timeout():
 func _on_ShriekArea_body_entered(body):
 	body.hit(damage_to_player)
 
-func _on_PlayerHitArea_body_entered(body):
-	body.hit(damage_to_player)
-
 func _physics_process(delta):
 	turn()
 	_velocity = calculate_move_velocity(delta)
@@ -45,6 +47,7 @@ func _physics_process(delta):
 	choose_visibility()
 	attack()
 	update_animation()
+	check_for_player_collision()
 
 func choose_visibility():
 	if ($RayCasts/FrontRayCast.is_colliding() or $RayCasts/BackRayCast.is_colliding()) and not is_visible:
@@ -90,13 +93,19 @@ func turn():
 			direction_x = -1
 
 func hit(damage):
-	if not is_dead and is_visible:
+	if is_visible:
 		health -= damage
 		if health <= 0:
 			$HitAnimationPlayer.play("die")
 			set_collision_mask_bit(3, false)
 			$AnimationPlayer.stop()
+			$CollisionShape2D.disabled = true
+			$PlayerHit/CollisionShape2D.disabled = true
 			set_physics_process(false)
 			return exp_worth
 		$HitAnimationPlayer.play("hit")
 	return 0
+
+func check_for_player_collision():
+	if $PlayerHit.overlaps_body(player_node):
+    	player_node.hit(damage_to_player)

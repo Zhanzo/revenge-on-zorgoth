@@ -7,6 +7,7 @@ const JUMP_POWER = -200
 var is_attacking = false
 var is_jumping = false
 var used_wall_jump = false
+var is_hit = false
 
 var level = 1
 var damage = 1
@@ -31,6 +32,10 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 		is_attacking = false
 	elif anim_name == "die":
 		emit_signal("died")
+
+func _on_HitAnimationPlayer_animation_finished(anim_name):
+	if anim_name == "hit":
+		is_hit = false
 
 func _physics_process(delta):
 	var direction_x = get_x_direction()
@@ -58,11 +63,9 @@ func calculate_move_velocity(
 	out.x = speed * direction_x
 	if Input.is_action_just_pressed("jump"):
 		if not is_jumping and not is_attacking:
-			print("regular jump")
 			out.y = JUMP_POWER
 			is_jumping = true
 		elif is_on_wall() and not used_wall_jump and not is_attacking:
-			print("wall jump")
 			out.y = JUMP_POWER
 			used_wall_jump = true
 	out.y += GRAVITY * delta
@@ -102,13 +105,15 @@ func update_animation():
 		$AnimationPlayer.play(animation)
 
 func hit(damage_to_player):
-	health -= damage_to_player
-	emit_signal("health_changed", health, max_health)
-	if health <= 0:
-		$AnimationPlayer.play("die")
-		set_physics_process(false)
-	else:
-		$HitAnimationPlayer.play("hit")
+	if not is_hit:
+		is_hit = true
+		health -= damage_to_player
+		emit_signal("health_changed", health, max_health)
+		if health <= 0:
+			$AnimationPlayer.play("die")
+			set_physics_process(false)
+		else:
+			$HitAnimationPlayer.play("hit")
 
 func gain_exp(new_exp):
 	var old_level = level

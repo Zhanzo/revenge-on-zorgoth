@@ -43,29 +43,34 @@ editor/display_folded = false
 position = Vector2( 464.104, 106.572 )
 scale = Vector2( 0.5, 0.5 )
 speed = 30
+player_nodepath = NodePath("../Player")
 
 [node name="HellHound2" parent="." index="6" instance=ExtResource( 5 )]
 position = Vector2( 612.02, 107.252 )
 scale = Vector2( 0.5, 0.5 )
 speed = 30
+player_nodepath = NodePath("../Player")
 
 [node name="HellHound3" parent="." index="7" instance=ExtResource( 5 )]
 position = Vector2( 923.37, 91.7766 )
 scale = Vector2( 0.5, 0.5 )
 speed = 30
+player_nodepath = NodePath("../Player")
 
 [node name="HellHound4" parent="." index="8" instance=ExtResource( 5 )]
 position = Vector2( 1043.64, 91.2777 )
 scale = Vector2( 0.5, 0.5 )
 speed = 30
+player_nodepath = NodePath("../Player")
 
 [node name="Zorgoth" parent="." index="9" instance=ExtResource( 6 )]
 position = Vector2( 1397.85, 102.156 )
 scale = Vector2( 0.5, 0.5 )
 health = 999
+player_nodepath = NodePath("../Player")
 
 [node name="Player" parent="." index="10"]
 position = Vector2( 32.0799, 114.476 )
-speed = 60
+speed = 80
 [connection signal="screen_entered" from="Zorgoth" to="." method="_on_Zorgoth_screen_entered"]
 [connection signal="screen_exited" from="Zorgoth" to="." method="_on_Zorgoth_screen_exited"]

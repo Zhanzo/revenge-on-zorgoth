@@ -2,14 +2,14 @@ extends Entity
 
 export var exp_worth = 1
 export var damage_to_player = 1
+export(NodePath) var player_nodepath
+
 var direction_x = -1
-var is_dead = false
+var player_node
 
 func _ready():
 	_velocity.x = -speed
-	
-func _on_PlayerHit_body_entered(body):
-	body.hit(damage_to_player)
+	player_node = get_node(player_nodepath)
 
 func _on_HitAnimationPlayer_animation_finished(anim_name):
 	if anim_name == "die":
@@ -20,6 +20,7 @@ func _physics_process(delta):
 	_velocity = calculate_move_velocity(delta)
 	_velocity = move_and_slide(_velocity, FLOOR_NORMAL, true)
 	update_animation()
+	check_for_player_collision()
 	
 func turn():
 	if is_on_wall() or not $RayCasts/GroundRayCast.is_colliding():
@@ -43,15 +44,15 @@ func calculate_move_velocity(
 	return out
 	
 func hit(damage):
-	if not is_dead:
-		health -= damage
-		if health <= 0:
-			$HitAnimationPlayer.play("die")
-			$AnimationPlayer.stop()
-			set_collision_mask_bit(3, false)
-			set_physics_process(false)
-			return exp_worth
-		$HitAnimationPlayer.play("hit")
+	health -= damage
+	if health <= 0:
+		$HitAnimationPlayer.play("die")
+		$AnimationPlayer.stop()
+		$CollisionShape2D.disabled = true
+		$PlayerHit/CollisionShape2D.disabled = true
+		set_physics_process(false)
+		return exp_worth
+	$HitAnimationPlayer.play("hit")
 	return 0
 
 func update_animation():
@@ -61,3 +62,7 @@ func update_animation():
 	
 	if $AnimationPlayer.current_animation != animation:
 		$AnimationPlayer.play(animation, 0)
+
+func check_for_player_collision():
+	if $PlayerHit.overlaps_body(player_node):
+    	player_node.hit(damage_to_player)

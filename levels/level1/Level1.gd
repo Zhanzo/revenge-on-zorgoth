@@ -8,7 +8,6 @@ func _ready():
 
 func _on_Player_died():
 	if is_zorgoth_encountered:
-		print("defeated")
 		$Player.health = $Player.max_health
 		$Player.emit_signal("health_changed", $Player.health, $Player.max_health)
 		$Zorgoth.scale.x *= -1
