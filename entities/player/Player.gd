@@ -8,7 +8,6 @@ var used_wall_jump = false
 var is_hit = false
 
 var level = 1
-var damage = 1
 var max_health = 3
 var required_experience = get_required_experience(level + 1)
 var experience = 0
@@ -33,16 +32,18 @@ func _on_HitAnimationPlayer_animation_finished(anim_name):
 
 func _physics_process(delta):
 	var direction_x = get_x_direction()
-	_velocity = calculate_move_velocity(direction_x, delta)
+	velocity = calculate_move_velocity(direction_x, delta)
 	
-	_velocity = move_and_slide(_velocity, FLOOR_NORMAL, true)
+	velocity = move_and_slide(velocity, FLOOR_NORMAL, true)
 	
-	_velocity.y = get_air_velocity()
+	velocity.y = get_air_velocity()
 	set_jump_value()
 	is_attacking = get_attack_state()
 	
-	if position.y > 144:
+	if position.y > 160:
+		# falling in endless pit, kill the player
 		emit_signal("died")
+		set_physics_process(false)
 	
 	update_animation()
 
@@ -53,22 +54,26 @@ func calculate_move_velocity(
 		direction_x,
 		delta
 	):
-	var out = _velocity
+	var out = velocity
 	out.x = speed * direction_x
 	if Input.is_action_just_pressed("jump"):
-		if not is_jumping and not is_attacking:
+		if not is_jumping:
+			if is_attacking:
+				is_attacking = false
 			out.y = JUMP_POWER
 			is_jumping = true
+			$JumpSound.play()
 		elif is_on_wall() and not used_wall_jump and not is_attacking:
 			out.y = JUMP_POWER
 			used_wall_jump = true
+			$JumpSound.play()
 	out.y += GRAVITY * delta
 	return out
 
 func get_air_velocity():
 	if is_on_floor() and (Input.is_action_just_released("move_right") or Input.is_action_just_released("move_left")):
 		return 0
-	return _velocity.y
+	return velocity.y
 
 func set_jump_value():
 	if is_on_floor() and is_jumping:
@@ -77,6 +82,7 @@ func set_jump_value():
 
 func get_attack_state():
 	if Input.is_action_just_pressed("attack") and not is_attacking and not is_jumping:
+		$SwordSound.play()
 		return true
 	return is_attacking
 
@@ -85,12 +91,12 @@ func flip(to_right):
 
 func update_animation():
 	var animation = "idle"
-	if abs(_velocity.x) > 10:
+	if abs(velocity.x) > 5:
 		animation = "run"
-		flip(_velocity.x >= 0)
+		flip(velocity.x >= 0)
 	
 	if not is_on_floor():
-		animation = "jump" if _velocity.y < 0 else "fall"
+		animation = "jump" if velocity.y < 0 else "fall"
 	
 	if is_attacking:
 		animation = "attack"
@@ -104,9 +110,11 @@ func hit(damage_to_player):
 		health -= damage_to_player
 		emit_signal("health_changed", health, max_health)
 		if health <= 0:
+			$DeathSound.play()
 			$AnimationPlayer.play("die")
 			set_physics_process(false)
 		else:
+			$HitSound.play()
 			$HitAnimationPlayer.play("hit")
 
 func gain_exp(new_exp):

@@ -17,4 +17,5 @@ func _on_ContinueButton_pressed():
 
 func _on_ExitButton_pressed():
 	get_tree().paused = false
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(title_screen_path)

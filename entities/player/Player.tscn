@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://entities/player/Player.gd" type="Script" id=1]
 [ext_resource path="res://entities/player/sprites/gothic-hero-idle.png" type="Texture" id=2]
@@ -7,6 +7,10 @@
 [ext_resource path="res://entities/player/sprites/gothic-hero-jump.png" type="Texture" id=5]
 [ext_resource path="res://entities/player/sprites/gothic-hero-hurt.png" type="Texture" id=6]
 [ext_resource path="res://entities/player/level_up/LevelUp.tscn" type="PackedScene" id=7]
+[ext_resource path="res://entities/player/sound/Jump.wav" type="AudioStream" id=8]
+[ext_resource path="res://entities/player/sound/hit.wav" type="AudioStream" id=9]
+[ext_resource path="res://entities/player/sound/sword.wav" type="AudioStream" id=10]
+[ext_resource path="res://entities/player/sound/death.wav" type="AudioStream" id=11]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15.3172, 11.0984 )
@@ -672,6 +676,22 @@ margin_left = -16.0
 margin_top = -16.0
 margin_right = -16.0
 margin_bottom = -16.0
+
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
+volume_db = -10.0
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 9 )
+volume_db = 10.0
+attenuation = 0.307786
+
+[node name="SwordSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 10 )
+volume_db = -5.0
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 11 )
 [connection signal="body_entered" from="Sprites/AttackSprite/SwordHit" to="." method="_on_SwordHit_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="animation_finished" from="HitAnimationPlayer" to="." method="_on_HitAnimationPlayer_animation_finished"]

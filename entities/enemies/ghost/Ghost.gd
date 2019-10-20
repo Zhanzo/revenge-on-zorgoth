@@ -1,7 +1,6 @@
 extends Entity
 
 export var exp_worth = 5
-export var damage_to_player = 2
 export (NodePath) var player_nodepath
 
 var direction_x = -1
@@ -12,7 +11,6 @@ var is_attack_available = true
 var is_attacking = false
 var is_appearing = false
 var is_vanishing = false
-var is_dead = false
 
 func _ready():
 	player_node = get_node(player_nodepath)
@@ -24,7 +22,7 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	elif anim_name == "vanish":
 		is_vanishing = false
 		is_visible = false
-	elif anim_name == "shriek":
+	elif anim_name == "attack":
 		$AttackCD.start()
 		$AttackAnimationPlayer.play("attack")
 		is_attacking = false
@@ -37,12 +35,12 @@ func _on_AttackCD_timeout():
 	is_attack_available = true
 
 func _on_ShriekArea_body_entered(body):
-	body.hit(damage_to_player)
+	body.hit(damage)
 
 func _physics_process(delta):
 	turn()
-	_velocity = calculate_move_velocity(delta)
-	_velocity = move_and_slide(_velocity, FLOOR_NORMAL, true)
+	velocity = calculate_move_velocity(delta)
+	velocity = move_and_slide(velocity, FLOOR_NORMAL, true)
 	
 	choose_visibility()
 	attack()
@@ -61,9 +59,8 @@ func update_animation():
 		animation = "appear"
 	elif is_visible:
 		animation = "idle"
-		
 		if is_attacking:
-			animation = "shriek"
+			animation = "attack"
 		elif is_vanishing:
 			animation = "vanish"
 	if $AnimationPlayer.current_animation != animation and animation != "":
@@ -75,7 +72,7 @@ func attack():
 		is_attacking = true
 
 func calculate_move_velocity(delta):
-	var out = _velocity
+	var out = velocity
 	out.y += GRAVITY * delta
 	return out
 
@@ -94,13 +91,14 @@ func turn():
 
 func hit(damage):
 	if is_visible:
+		$HitSound.play()
 		health -= damage
 		if health <= 0:
 			$HitAnimationPlayer.play("die")
 			set_collision_mask_bit(3, false)
 			$AnimationPlayer.stop()
-			$CollisionShape2D.disabled = true
-			$PlayerHit/CollisionShape2D.disabled = true
+			$CollisionShape2D.set_deferred("disabled", true)
+			$PlayerHit/CollisionShape2D.set_deferred("disabled", true)
 			set_physics_process(false)
 			return exp_worth
 		$HitAnimationPlayer.play("hit")
@@ -109,4 +107,4 @@ func hit(damage):
 
 func check_for_player_collision():
 	if $PlayerHit.overlaps_body(player_node):
-    	player_node.hit(damage_to_player)
+    	player_node.hit(damage)

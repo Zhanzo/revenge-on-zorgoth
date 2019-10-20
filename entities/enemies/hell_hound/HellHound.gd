@@ -1,14 +1,13 @@
 extends Entity
 
 export var exp_worth = 1
-export var damage_to_player = 1
 export (NodePath) var player_nodepath
 
 var direction_x = -1
 var player_node
 
 func _ready():
-	_velocity.x = -speed
+	velocity.x = -speed
 	player_node = get_node(player_nodepath)
 
 func _on_HitAnimationPlayer_animation_finished(anim_name):
@@ -17,8 +16,8 @@ func _on_HitAnimationPlayer_animation_finished(anim_name):
 
 func _physics_process(delta):
 	turn()
-	_velocity = calculate_move_velocity(delta)
-	_velocity = move_and_slide(_velocity, FLOOR_NORMAL, true)
+	velocity = calculate_move_velocity(delta)
+	velocity = move_and_slide(velocity, FLOOR_NORMAL, true)
 	update_animation()
 	check_for_player_collision()
 	
@@ -38,18 +37,19 @@ func turn():
 func calculate_move_velocity(
 		delta
 	):
-	var out = _velocity
+	var out = velocity
 	out.x = speed * direction_x
 	out.y += GRAVITY * delta
 	return out
 	
 func hit(damage):
+	$HitSound.play()
 	health -= damage
 	if health <= 0:
 		$HitAnimationPlayer.play("die")
 		$AnimationPlayer.stop()
-		$CollisionShape2D.disabled = true
-		$PlayerHit/CollisionShape2D.disabled = true
+		$CollisionShape2D.set_deferred("disabled", true)
+		$PlayerHit/CollisionShape2D.set_deferred("disabled", true)
 		set_physics_process(false)
 		return exp_worth
 	$HitAnimationPlayer.play("hit")
@@ -57,7 +57,7 @@ func hit(damage):
 
 func update_animation():
 	var animation = "idle"
-	if abs(_velocity.x) > 10:
+	if abs(velocity.x) > 10:
 		animation = "walk"
 	
 	if $AnimationPlayer.current_animation != animation:
@@ -65,4 +65,4 @@ func update_animation():
 
 func check_for_player_collision():
 	if $PlayerHit.overlaps_body(player_node):
-    	player_node.hit(damage_to_player)
+    	player_node.hit(damage)

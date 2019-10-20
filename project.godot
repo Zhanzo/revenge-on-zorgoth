@@ -33,6 +33,7 @@ config/icon="res://icon.png"
 [autoload]
 
 GameSaver="*res://system/save/GameSaver.gd"
+MusicController="*res://system/music/MusicController.tscn"
 
 [display]
 

@@ -9,4 +9,6 @@ export var speed = 60
 # warning-ignore:unused_class_variable
 export var health = 1
 # warning-ignore:unused_class_variable
-var _velocity = Vector2.ZERO
+export var damage = 1
+# warning-ignore:unused_class_variable
+var velocity = Vector2.ZERO

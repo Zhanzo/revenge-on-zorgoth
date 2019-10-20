@@ -11,11 +11,11 @@ func _ready():
 
 func _on_NewGame_pressed():
 	GameSaver.delete_save()
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(level_select_path)
 
 func _on_Continue_pressed():
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(level_select_path)
 
 func _on_ExitGame_pressed():

@@ -1,6 +1,5 @@
 extends Entity
 
-export var damage_to_player = 5
 export var exp_worth = 10
 export(NodePath) var player_nodepath
 
@@ -15,7 +14,7 @@ func _ready():
 	player_node = get_node(player_nodepath)
 
 func _on_BreathArea_body_entered(body):
-	body.hit(damage_to_player)
+	body.hit(damage)
 	
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "attack":
@@ -35,9 +34,9 @@ func _on_VisibilityNotifier2D_screen_entered():
 	emit_signal("screen_entered")
 
 func _physics_process(delta):
-	_velocity.y += GRAVITY * delta
+	velocity.y += GRAVITY * delta
 	
-	_velocity = move_and_slide(_velocity, FLOOR_NORMAL, true)
+	velocity = move_and_slide(velocity, FLOOR_NORMAL, true)
 	
 	attack()
 	update_animation()
@@ -60,12 +59,13 @@ func update_animation():
 		$AnimationPlayer.play(animation)
 
 func hit(damage):
+	$HitSound.play()
 	health -= damage
 	if health <= 0:
 		$HitAnimationPlayer.play("die")
 		$AnimationPlayer.stop()
-		$CollisionShape2D.disabled = true
-		$PlayerHit/CollisionShape2D.disabled = true
+		$CollisionShape2D.set_deferred("disabled", true)
+		$PlayerHit/CollisionShape2D.set_deferred("disabled", true)
 		set_physics_process(false)
 		return exp_worth
 	$HitAnimationPlayer.play("hit")
@@ -73,4 +73,4 @@ func hit(damage):
 
 func check_for_player_collision():
 	if $PlayerHit.overlaps_body(player_node):
-    	player_node.hit(damage_to_player)
+    	player_node.hit(damage)

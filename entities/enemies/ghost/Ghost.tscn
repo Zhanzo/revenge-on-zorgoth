@@ -1,11 +1,13 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://entities/enemies/ghost/Ghost.gd" type="Script" id=1]
 [ext_resource path="res://entities/enemies/ghost/sprites/ghost-appears.png" type="Texture" id=2]
 [ext_resource path="res://entities/enemies/ghost/sprites/ghost-idle.png" type="Texture" id=3]
-[ext_resource path="res://entities/enemies/ghost/sprites/ghost-shriek.png" type="Texture" id=4]
+[ext_resource path="res://entities/enemies/ghost/sprites/ghost-attack.png" type="Texture" id=4]
 [ext_resource path="res://entities/enemies/ghost/sprites/ghost-vanish.png" type="Texture" id=5]
 [ext_resource path="res://entities/enemies/ghost/sprites/swoosh.png" type="Texture" id=6]
+[ext_resource path="res://entities/sound/hit.wav" type="AudioStream" id=7]
+[ext_resource path="res://entities/enemies/ghost/sound/attack.wav" type="AudioStream" id=8]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 8, 15 )
@@ -87,70 +89,7 @@ tracks/5/keys = {
 }
 
 [sub_resource type="Animation" id=3]
-length = 0.7
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprites/IdleSprite:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Sprites/AppearSprite:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Sprites/ShriekSprite:visible")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Sprites/VanishSprite:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("Sprites/IdleSprite:frame")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
-"update": 1,
-"values": [ 0, 1, 2, 3, 4, 5, 6 ]
-}
-
-[sub_resource type="Animation" id=4]
+resource_name = "attack"
 length = 0.7
 step = 0.2
 tracks/0/type = "value"
@@ -212,6 +151,70 @@ tracks/4/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 0, 1, 2, 3 ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.7
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/IdleSprite:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Sprites/AppearSprite:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("Sprites/ShriekSprite:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("Sprites/VanishSprite:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Sprites/IdleSprite:frame")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6 ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -359,6 +362,18 @@ tracks/2/keys = {
 "update": 1,
 "values": [ false, true ]
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("AttackSound:playing")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
 
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 12, 22 )
@@ -412,8 +427,8 @@ shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/appear = SubResource( 2 )
-anims/idle = SubResource( 3 )
-anims/shriek = SubResource( 4 )
+anims/attack = SubResource( 3 )
+anims/idle = SubResource( 4 )
 anims/vanish = SubResource( 5 )
 
 [node name="HitAnimationPlayer" type="AnimationPlayer" parent="."]
@@ -428,6 +443,7 @@ position = Vector2( 0, 2 )
 shape = SubResource( 9 )
 
 [node name="RayCasts" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="FrontRayCast" type="RayCast2D" parent="RayCasts"]
 enabled = true
@@ -442,10 +458,17 @@ wait_time = 3.0
 one_shot = true
 
 [node name="PlayerHit" type="Area2D" parent="."]
+editor/display_folded = true
 position = Vector2( 0, 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerHit"]
 shape = SubResource( 10 )
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 7 )
+
+[node name="AttackSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 8 )
 [connection signal="body_entered" from="Sprites/AttackSprite/ShriekArea" to="." method="_on_ShriekArea_body_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="animation_finished" from="HitAnimationPlayer" to="." method="_on_HitAnimationPlayer_animation_finished"]

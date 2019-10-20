@@ -10,23 +10,27 @@ var levels_completed = {
 func _ready():
 	GameSaver.load_game()
 
+func _on_Timer_timeout():
+	# warning-ignore:return_value_discarded
+	get_tree().reload_current_scene()
+
 func _on_HellHoundBoss_tree_exited():
 	$Level/LevelEnd.visible = true
-	$Level/LevelEnd/CollisionShape2D.disabled = false
+	$Level/LevelEnd/CollisionShape2D.set_deferred("disabled", false)
+	$Level/LevelEnd/AnimationPlayer.play("default")
 
-# warning-ignore:unused_argument
-func _on_LevelEnd_body_entered(body):
+func _on_LevelEnd_level_complete():
 	GameSaver.save_game()
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(level_select_path)
 
 func _on_Player_died():
-# warning-ignore:return_value_discarded
-	get_tree().reload_current_scene()
-	GameSaver.load_stats()
+	$DeathSound.play()
+	$Timer.start()
 
 func save_game(save):
 	save.data["levels_completed"] = levels_completed
 
+# warning-ignore:unused_argument
 func load_game(save):
 	pass

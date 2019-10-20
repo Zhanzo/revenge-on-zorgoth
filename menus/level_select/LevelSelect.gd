@@ -17,11 +17,11 @@ func _ready():
 		$MarginContainer/VBoxContainer/Levels/Level3Button.visible = false
 		
 func _on_Level1Button_pressed():
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(level1_path)
 	
 func _on_Level2Button_pressed():
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(level2_path)
 
 func _on_Level3Button_pressed():
@@ -29,7 +29,7 @@ func _on_Level3Button_pressed():
 	pass
 
 func _on_BackButton_pressed():
-# warning-ignore:return_value_discarded
+	# warning-ignore:return_value_discarded
 	get_tree().change_scene(title_screen_path)
 	
 func load_game(save):
