@@ -14,27 +14,25 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://entities/Entity.gd"
 }, {
-"base": "Node2D",
-"class": "Level",
-"language": "GDScript",
-"path": "res://levels/LevelTemplate.gd"
-}, {
 "base": "Resource",
 "class": "SaveGame",
 "language": "GDScript",
-"path": "res://system/SaveGame.gd"
+"path": "res://system/save/SaveGame.gd"
 } ]
 _global_script_class_icons={
 "Entity": "",
-"Level": "",
 "SaveGame": ""
 }
 
 [application]
 
 config/name="RevengeOnZorgoth"
-run/main_scene="res://menus/title/TitleScreen.tscn"
+run/main_scene="res://menus/title/Title.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+GameSaver="*res://system/save/GameSaver.gd"
 
 [display]
 

@@ -1,7 +1,17 @@
-extends Level
+extends Node2D
 
 var is_zorgoth_encountered = false
 var player_died_by_zorgoth = false
+
+var levels_completed = {
+	"level1": true,
+	"level2": false
+}
+
+var level_select_path = "res://menus/level_select/LevelSelect.tscn"
+
+func _ready():
+	GameSaver.load_game()
 
 func _on_Player_died():
 	if is_zorgoth_encountered:
@@ -16,6 +26,7 @@ func _on_Player_died():
 		player_died_by_zorgoth = true
 		$Level/Zorgoth._velocity.x = 30
 	else:
+# warning-ignore:return_value_discarded
 		get_tree().reload_current_scene()
 
 func _on_Zorgoth_screen_exited():
@@ -28,6 +39,15 @@ func _on_Zorgoth_screen_exited():
 func _on_Zorgoth_screen_entered():
 	is_zorgoth_encountered = true
 
+# warning-ignore:unused_argument
 func _on_LevelEnd_body_entered(body):
-	$GameSaver.save_stats()
-	get_tree().change_scene_to(next_level)
+	GameSaver.save_game()
+# warning-ignore:return_value_discarded
+	get_tree().change_scene(level_select_path)
+
+func save_game(save):
+	save.data["levels_completed"] = levels_completed
+
+func load_game(save):
+	if save.data.has("levels_completed"):
+		levels_completed = save.data["levels_completed"]		

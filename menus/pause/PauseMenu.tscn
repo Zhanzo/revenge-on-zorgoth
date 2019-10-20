@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://menus/pause/PauseMenu.gd" type="Script" id=1]
-[ext_resource path="res://menus/title/TitleScreen.tscn" type="PackedScene" id=2]
-[ext_resource path="res://menus/fonts/menu_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://menus/fonts/menu_font.tres" type="DynamicFont" id=2]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -13,7 +12,6 @@ pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
-title_screen = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_right = 1.0
@@ -31,34 +29,34 @@ margin_right = 54.0
 margin_bottom = 21.0
 
 [node name="CenterContainer" type="CenterContainer" parent="MarginContainer"]
-margin_right = 120.0
+margin_right = 132.0
 margin_bottom = 48.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/CenterContainer"]
-margin_right = 120.0
+margin_right = 132.0
 margin_bottom = 48.0
 custom_constants/separation = 10
 alignment = 1
 
 [node name="ContinueButton" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer"]
-margin_right = 120.0
+margin_right = 132.0
 margin_bottom = 19.0
 custom_styles/focus = SubResource( 1 )
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.552941, 0.596078, 0.0392157, 1 )
 custom_colors/font_color_hover = Color( 0.286275, 0.27451, 0.27451, 1 )
-text = "Continue"
+text = "CONTINUE"
 flat = true
 
 [node name="ExitButton" type="Button" parent="MarginContainer/CenterContainer/VBoxContainer"]
 margin_top = 29.0
-margin_right = 120.0
+margin_right = 132.0
 margin_bottom = 48.0
 custom_styles/focus = SubResource( 2 )
-custom_fonts/font = ExtResource( 3 )
+custom_fonts/font = ExtResource( 2 )
 custom_colors/font_color = Color( 0.552941, 0.596078, 0.0392157, 1 )
 custom_colors/font_color_hover = Color( 0.286275, 0.27451, 0.27451, 1 )
-text = "Exit Game"
+text = "EXIT LEVEL"
 flat = true
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/ContinueButton" to="." method="_on_ContinueButton_pressed"]
 [connection signal="pressed" from="MarginContainer/CenterContainer/VBoxContainer/ExitButton" to="." method="_on_ExitButton_pressed"]

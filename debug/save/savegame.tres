@@ -1,0 +1,20 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://system/save/SaveGame.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+data = {
+"levels_completed": {
+"level1": true,
+"level2": true
+},
+"player": {
+"damage": 1,
+"experience": 17.0,
+"health": 6,
+"level": 4,
+"max_health": 6,
+"required_experience": 23.0
+}
+}

@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://menus/title/TitleScreen.gd" type="Script" id=1]
-[ext_resource path="res://menus/title/sprites/menu_background.png" type="Texture" id=2]
+[ext_resource path="res://menus/title/Title.gd" type="Script" id=1]
+[ext_resource path="res://menus/sprites/menu_background.png" type="Texture" id=2]
 [ext_resource path="res://menus/title/fonts/title_font.tres" type="DynamicFont" id=3]
 [ext_resource path="res://menus/fonts/menu_font.tres" type="DynamicFont" id=4]
 [ext_resource path="res://menus/title/sprites/zorgoth.png" type="Texture" id=5]
@@ -39,6 +39,7 @@ Zorgoth"
 align = 1
 valign = 1
 autowrap = true
+uppercase = true
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
 margin_top = 50.0
@@ -62,7 +63,7 @@ custom_styles/focus = SubResource( 1 )
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0.552941, 0.596078, 0.0392157, 1 )
 custom_colors/font_color_hover = Color( 0.286275, 0.27451, 0.27451, 1 )
-text = "Continue"
+text = "CONTINUE"
 flat = true
 align = 0
 
@@ -74,7 +75,7 @@ custom_styles/focus = SubResource( 2 )
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0.552941, 0.596078, 0.0392157, 1 )
 custom_colors/font_color_hover = Color( 0.286275, 0.27451, 0.27451, 1 )
-text = "New Game"
+text = "NEW GAME"
 flat = true
 align = 0
 
@@ -86,7 +87,7 @@ custom_styles/focus = SubResource( 3 )
 custom_fonts/font = ExtResource( 4 )
 custom_colors/font_color = Color( 0.552941, 0.596078, 0.0392157, 1 )
 custom_colors/font_color_hover = Color( 0.286275, 0.27451, 0.27451, 1 )
-text = "Exit Game"
+text = "EXIT GAME"
 flat = true
 align = 0
 

@@ -1,7 +1,5 @@
 extends Entity
 
-onready var SAVE_KEY = "player_"
-
 const JUMP_POWER = -200
 
 var is_attacking = false
@@ -18,10 +16,6 @@ var experience = 0
 signal health_changed(health, max_health)
 signal exp_changed(experience, required_experience)
 signal died
-
-func _ready():
-	emit_signal("health_changed", health, max_health)
-	emit_signal("exp_changed", experience, required_experience)
 	
 func _on_SwordHit_body_entered(body):
 	var gained_exp = body.hit(damage)
@@ -135,20 +129,23 @@ func level_up():
 	health = max_health
 	required_experience = get_required_experience(level + 1)
 
-func save_stats(save_game):
-	save_game.data[SAVE_KEY + "health"] = health
-	save_game.data[SAVE_KEY + "max_health"] = max_health
-	save_game.data[SAVE_KEY + "exp"] = experience
-	save_game.data[SAVE_KEY + "exp_req"] = required_experience
-	save_game.data[SAVE_KEY + "damage"] = damage
-	save_game.data[SAVE_KEY + "level"] = level
-	
-func load_stats(save_game):
-	health = save_game.data[SAVE_KEY + "health"]
-	max_health = save_game.data[SAVE_KEY + "max_health"]
-	experience = save_game.data[SAVE_KEY + "exp"]
-	required_experience = save_game.data[SAVE_KEY + "exp_req"]
-	damage = save_game.data[SAVE_KEY + "damage"]
-	level = save_game.data[SAVE_KEY + "level"]
+func save_game(save):
+	save.data["player"] = {
+		"level": level,
+		"damage": damage,
+		"max_health": max_health,
+		"health": health,
+		"required_experience": required_experience,
+		"experience": experience
+	}
+
+func load_game(save):
+	var data = save.data["player"]
+	level = data["level"]
+	damage = data["damage"]
+	max_health = data["max_health"]
+	health = data["health"]
+	required_experience = data["required_experience"]
+	experience = data["experience"]
 	emit_signal("health_changed", health, max_health)
 	emit_signal("exp_changed", experience, required_experience)
