@@ -39,7 +39,6 @@ func _on_Zorgoth_screen_exited():
 		$Level/Player.set_physics_process(true)
 		$Level/LevelEnd.visible = true
 		$Level/LevelEnd/CollisionShape2D.set_deferred("disabled", false)
-		$Level/LevelEnd/AnimationPlayer.play("default")
 
 func _on_Zorgoth_screen_entered():
 	is_zorgoth_encountered = true

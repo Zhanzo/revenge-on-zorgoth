@@ -14,10 +14,10 @@ func _on_Timer_timeout():
 	# warning-ignore:return_value_discarded
 	get_tree().reload_current_scene()
 
-func _on_HellHoundBoss_tree_exited():
+func _on_HellHoundBoss_died():
+	print("Boss dead")
 	$Level/LevelEnd.visible = true
 	$Level/LevelEnd/CollisionShape2D.set_deferred("disabled", false)
-	$Level/LevelEnd/AnimationPlayer.play("default")
 
 func _on_LevelEnd_level_complete():
 	GameSaver.save_game()
@@ -34,3 +34,5 @@ func save_game(save):
 # warning-ignore:unused_argument
 func load_game(save):
 	pass
+
+

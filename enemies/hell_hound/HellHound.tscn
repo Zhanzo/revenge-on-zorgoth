@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://enemies/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://enemies/hell_hound/HellHound.gd" type="Script" id=2]
+[ext_resource path="res://enemies/hell_hound/sprites/hell-hound-walk.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 22, 12 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "walk"
+length = 1.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprites/WalkSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ]
+}
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 22, 12 )
+
+[node name="HellHound" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="WalkSprite" type="Sprite" parent="Sprites" index="0"]
+texture = ExtResource( 3 )
+hframes = 12
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2( 0, 4 )
+shape = SubResource( 1 )
+
+[node name="AnimationPlayer" parent="." index="2"]
+anims/walk = SubResource( 2 )
+
+[node name="CollisionShape2D" parent="PlayerHit" index="0"]
+position = Vector2( 0, 4 )
+shape = SubResource( 3 )
+
+[node name="GroundRayCast" type="RayCast2D" parent="." index="6"]
+position = Vector2( -20, 0 )
+enabled = true
+cast_to = Vector2( 0, 20 )
+collision_mask = 4
